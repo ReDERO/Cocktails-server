@@ -61,6 +61,7 @@
     <Compile Include="Cocktail.cs" />
     <Compile Include="CocktailIngredient.cs" />
     <Compile Include="CocktailsDbContext.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Ingredient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

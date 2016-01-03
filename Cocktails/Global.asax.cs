@@ -15,7 +15,7 @@ namespace Cocktails
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<CocktailsDbContext>(new CocktailsDbInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CocktailsDbContext, Configuration>());
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);

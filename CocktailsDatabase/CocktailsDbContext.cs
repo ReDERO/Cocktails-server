@@ -11,7 +11,7 @@ namespace CocktailsDatabase
     public class CocktailsDbContext : IdentityDbContext<ApplicationUser>
     {
         public CocktailsDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("CocktailsConnection", throwIfV1Schema: false)
         {
         }
 
