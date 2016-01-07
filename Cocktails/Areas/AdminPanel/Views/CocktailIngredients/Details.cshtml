@@ -1,0 +1,42 @@
+﻿@model CocktailsDatabase.CocktailIngredient
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CocktailIngredient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Cocktail.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cocktail.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredient.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ingredient.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Count)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

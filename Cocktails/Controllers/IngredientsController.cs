@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CocktailsDatabase;
+using Cocktails.Models;
 
 namespace Cocktails.Controllers
 {
@@ -17,9 +18,14 @@ namespace Cocktails.Controllers
         private CocktailsDbContext db = new CocktailsDbContext();
 
         // GET: api/Ingredients
-        public IQueryable<Ingredient> GetIngredients()
+        public List<IngredientListItem> GetIngredients()
         {
-            return db.Ingredients;
+            List<IngredientListItem> result = new List<IngredientListItem>();
+            foreach (Ingredient item in db.Ingredients)
+            {
+                result.Add(new IngredientListItem(item));
+            }
+            return result;
         }
 
         // GET: api/Ingredients/5
