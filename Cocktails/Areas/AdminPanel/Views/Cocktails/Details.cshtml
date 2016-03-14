@@ -27,6 +27,10 @@
         </dd>
 
     </dl>
+    <p>
+        @Html.ActionLink("Create New", "Create", "CocktailIngredients", new { cocktailId = Model.Id }, null)
+    </p>
+    @{ Html.RenderPartial("~/Areas/AdminPanel/Views/CocktailIngredients/List.cshtml", Model.Ingredients); }
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

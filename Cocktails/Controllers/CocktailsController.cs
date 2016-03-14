@@ -20,7 +20,7 @@ namespace Cocktails.Controllers
         // GET: api/Cocktails
         public object GetCoctails()
         {
-            var cocktails = db.Coctails.Include(c => c.Ingredients).ToList();
+            var cocktails = db.Cocktails.Include(c => c.Ingredients).ToList();
             var cocktailsView = new List<CocktailViewModel>();
 
             foreach (var cocktail in cocktails)
@@ -35,7 +35,7 @@ namespace Cocktails.Controllers
         [ResponseType(typeof(Cocktail))]
         public IHttpActionResult GetCocktail(int id)
         {
-            Cocktail cocktail = db.Coctails.Find(id);
+            Cocktail cocktail = db.Cocktails.Find(id);
             if (cocktail == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Cocktails.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Coctails.Add(cocktail);
+            db.Cocktails.Add(cocktail);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = cocktail.Id }, cocktail);
@@ -98,13 +98,13 @@ namespace Cocktails.Controllers
         [ResponseType(typeof(Cocktail))]
         public IHttpActionResult DeleteCocktail(int id)
         {
-            Cocktail cocktail = db.Coctails.Find(id);
+            Cocktail cocktail = db.Cocktails.Find(id);
             if (cocktail == null)
             {
                 return NotFound();
             }
 
-            db.Coctails.Remove(cocktail);
+            db.Cocktails.Remove(cocktail);
             db.SaveChanges();
 
             return Ok(cocktail);
@@ -121,7 +121,7 @@ namespace Cocktails.Controllers
 
         private bool CocktailExists(int id)
         {
-            return db.Coctails.Count(e => e.Id == id) > 0;
+            return db.Cocktails.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace CocktailsDatabase
         /// <summary>
         /// Список коктейлей
         /// </summary>
-        public DbSet<Cocktail> Coctails { set; get; }
+        public DbSet<Cocktail> Cocktails { set; get; }
 
         /// <summary>
         /// Список ингредиентов

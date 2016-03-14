@@ -17,7 +17,7 @@ namespace Cocktails.Areas.AdminPanel.Controllers
         // GET: AdminPanel/Cocktails
         public ActionResult Index()
         {
-            return View(db.Coctails.ToList());
+            return View(db.Cocktails.ToList());
         }
 
         // GET: AdminPanel/Cocktails/Details/5
@@ -27,7 +27,7 @@ namespace Cocktails.Areas.AdminPanel.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cocktail cocktail = db.Coctails.Find(id);
+            Cocktail cocktail = db.Cocktails.Find(id);
             if (cocktail == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace Cocktails.Areas.AdminPanel.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Coctails.Add(cocktail);
+                db.Cocktails.Add(cocktail);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace Cocktails.Areas.AdminPanel.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cocktail cocktail = db.Coctails.Find(id);
+            Cocktail cocktail = db.Cocktails.Find(id);
             if (cocktail == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace Cocktails.Areas.AdminPanel.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cocktail cocktail = db.Coctails.Find(id);
+            Cocktail cocktail = db.Cocktails.Find(id);
             if (cocktail == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace Cocktails.Areas.AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cocktail cocktail = db.Coctails.Find(id);
-            db.Coctails.Remove(cocktail);
+            Cocktail cocktail = db.Cocktails.Find(id);
+            db.Cocktails.Remove(cocktail);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

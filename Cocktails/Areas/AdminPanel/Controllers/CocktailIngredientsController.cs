@@ -17,31 +17,31 @@ namespace Cocktails.Areas.AdminPanel.Controllers
         // GET: AdminPanel/CocktailIngredients
         public ActionResult Index()
         {
-            var cocktailIngredients = db.CocktailIngredients.Include(c => c.Cocktail).Include(c => c.Ingredient);
+            var cocktailIngredients = db.CocktailIngredients
+                .Include(c => c.Cocktail)
+                .Include(c => c.Ingredient);
             return View(cocktailIngredients.ToList());
         }
-
-        // GET: AdminPanel/CocktailIngredients/Details/5
-        public ActionResult Details(int? id)
+        
+        // GET: AdminPanel/CocktailIngredients/Create
+        public ActionResult Create(int? cocktailId)
         {
-            if (id == null)
+            if (cocktailId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CocktailIngredient cocktailIngredient = db.CocktailIngredients.Find(id);
-            if (cocktailIngredient == null)
+            Cocktail cocktail = db.Cocktails.Find(cocktailId);
+            if (cocktail == null)
             {
                 return HttpNotFound();
             }
-            return View(cocktailIngredient);
-        }
-
-        // GET: AdminPanel/CocktailIngredients/Create
-        public ActionResult Create()
-        {
-            ViewBag.CocktailId = new SelectList(db.Coctails, "Id", "Name");
+            CocktailIngredient cocktailIngredient = new CocktailIngredient()
+            {
+                CocktailId = cocktail.Id,
+                Cocktail = cocktail
+            };
             ViewBag.IngredientId = new SelectList(db.Ingredients, "Id", "Name");
-            return View();
+            return View(cocktailIngredient);
         }
 
         // POST: AdminPanel/CocktailIngredients/Create
@@ -55,28 +55,31 @@ namespace Cocktails.Areas.AdminPanel.Controllers
             {
                 db.CocktailIngredients.Add(cocktailIngredient);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Cocktails", new { id = cocktailIngredient.CocktailId });
             }
 
-            ViewBag.CocktailId = new SelectList(db.Coctails, "Id", "Name", cocktailIngredient.CocktailId);
+            Cocktail cocktail = db.Cocktails.Find(cocktailIngredient.CocktailId);
+            cocktailIngredient.Cocktail = cocktail;
+
             ViewBag.IngredientId = new SelectList(db.Ingredients, "Id", "Name", cocktailIngredient.IngredientId);
             return View(cocktailIngredient);
         }
 
         // GET: AdminPanel/CocktailIngredients/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? cocktailId, int? ingredientId)
         {
-            if (id == null)
+            if (cocktailId == null && ingredientId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CocktailIngredient cocktailIngredient = db.CocktailIngredients.Find(id);
+            CocktailIngredient cocktailIngredient = db.CocktailIngredients
+                .Include(ci => ci.Cocktail)
+                .Include(ci => ci.Ingredient)
+                .FirstOrDefault(ci => ci.CocktailId == cocktailId && ci.IngredientId == ingredientId);
             if (cocktailIngredient == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CocktailId = new SelectList(db.Coctails, "Id", "Name", cocktailIngredient.CocktailId);
-            ViewBag.IngredientId = new SelectList(db.Ingredients, "Id", "Name", cocktailIngredient.IngredientId);
             return View(cocktailIngredient);
         }
 
@@ -91,21 +94,28 @@ namespace Cocktails.Areas.AdminPanel.Controllers
             {
                 db.Entry(cocktailIngredient).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Cocktails", new { id = cocktailIngredient.CocktailId });
             }
-            ViewBag.CocktailId = new SelectList(db.Coctails, "Id", "Name", cocktailIngredient.CocktailId);
-            ViewBag.IngredientId = new SelectList(db.Ingredients, "Id", "Name", cocktailIngredient.IngredientId);
+
+            Cocktail cocktail = db.Cocktails.Find(cocktailIngredient.CocktailId);
+            Ingredient ingredient = db.Ingredients.Find(cocktailIngredient.IngredientId);
+            cocktailIngredient.Cocktail = cocktail;
+            cocktailIngredient.Ingredient = ingredient;
+            
             return View(cocktailIngredient);
         }
 
         // GET: AdminPanel/CocktailIngredients/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? cocktailId, int? ingredientId)
         {
-            if (id == null)
+            if (cocktailId == null && ingredientId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CocktailIngredient cocktailIngredient = db.CocktailIngredients.Find(id);
+            CocktailIngredient cocktailIngredient = db.CocktailIngredients
+                .Include(ci => ci.Cocktail)
+                .Include(ci => ci.Ingredient)
+                .FirstOrDefault(ci => ci.CocktailId == cocktailId && ci.IngredientId == ingredientId);
             if (cocktailIngredient == null)
             {
                 return HttpNotFound();
@@ -116,12 +126,12 @@ namespace Cocktails.Areas.AdminPanel.Controllers
         // POST: AdminPanel/CocktailIngredients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? cocktailId, int? ingredientId)
         {
-            CocktailIngredient cocktailIngredient = db.CocktailIngredients.Find(id);
+            CocktailIngredient cocktailIngredient = db.CocktailIngredients.Find(cocktailId, ingredientId);
             db.CocktailIngredients.Remove(cocktailIngredient);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Cocktails", new { id = cocktailId });
         }
 
         protected override void Dispose(bool disposing)
